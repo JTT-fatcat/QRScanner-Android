@@ -26,6 +26,7 @@ jobs:
         run: |
           # Create Android SDK directory structure
           mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools
+          mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
           
           # Download and install modern SDK command-line tools
           cd ~/.buildozer/android/platform/android-sdk/cmdline-tools
@@ -33,9 +34,12 @@ jobs:
           unzip -q commandlinetools-linux-9477386_latest.zip
           mv cmdline-tools latest
           
+          # Create symbolic link for buildozer compatibility
+          ln -sf ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+          
           # Set SDK path and install required components
           export ANDROID_HOME=~/.buildozer/android/platform/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools
           
           # Accept licenses and install components
           yes | sdkmanager --licenses
@@ -49,7 +53,7 @@ jobs:
           export ANDROIDMINAPI=21
           export ANDROIDHOME=~/.buildozer/android/platform/android-sdk
           export ANDROID_SDK_HOME=~/.buildozer/android/platform/android-sdk
-          export PATH=$PATH:$ANDROIDSDK/cmdline-tools/latest/bin:$ANDROIDSDK/platform-tools
+          export PATH=$PATH:$ANDROIDSDK/cmdline-tools/latest/bin:$ANDROIDSDK/tools/bin:$ANDROIDSDK/platform-tools
           
           # Run buildozer
           buildozer android debug
