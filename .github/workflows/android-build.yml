@@ -22,19 +22,20 @@ jobs:
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev automake
           pip install buildozer cython
       
-      - name: Setup Android SDK with correct structure
+      - name: Setup Android SDK with modern tools
         run: |
           # Create Android SDK directory structure
-          mkdir -p ~/.buildozer/android/platform/android-sdk
+          mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools
           
-          # Download and install SDK tools
-          cd ~/.buildozer/android/platform/android-sdk
-          wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-          unzip -q sdk-tools-linux-4333796.zip
+          # Download and install modern SDK command-line tools
+          cd ~/.buildozer/android/platform/android-sdk/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+          unzip -q commandlinetools-linux-9477386_latest.zip
+          mv cmdline-tools latest
           
           # Set SDK path and install required components
           export ANDROID_HOME=~/.buildozer/android/platform/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
           
           # Accept licenses and install components
           yes | sdkmanager --licenses
@@ -48,7 +49,7 @@ jobs:
           export ANDROIDMINAPI=21
           export ANDROIDHOME=~/.buildozer/android/platform/android-sdk
           export ANDROID_SDK_HOME=~/.buildozer/android/platform/android-sdk
-          export PATH=$PATH:$ANDROIDSDK/platform-tools:$ANDROIDSDK/tools:$ANDROIDSDK/tools/bin
+          export PATH=$PATH:$ANDROIDSDK/cmdline-tools/latest/bin:$ANDROIDSDK/platform-tools
           
           # Run buildozer
           buildozer android debug
@@ -59,4 +60,3 @@ jobs:
         with:
           name: qrscanner-apk
           path: bin/*.apk
-
