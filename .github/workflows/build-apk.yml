@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
     - name: Checkout repository
@@ -40,7 +40,11 @@ jobs:
           cmake \
           libffi-dev \
           libssl-dev \
-          automake
+          automake \
+          liblzma-dev \
+          libsqlite3-dev \
+          libreadline-dev \
+          libbz2-dev
     
     - name: Install buildozer and dependencies
       run: |
