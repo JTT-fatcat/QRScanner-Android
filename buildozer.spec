@@ -48,11 +48,6 @@ android.debug_artifact = apk
 # 架构支持
 android.archs = arm64-v8a, armeabi-v7a
 
-# 添加Python文件
-source.include_patterns = 
-    二维码扫描器.py,
-    main.py
-
 [buildozer]
 # 构建目录
 build_dir = ./.buildozer
